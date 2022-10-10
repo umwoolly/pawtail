@@ -1,0 +1,14 @@
+.homepage-container {
+    padding: 0;
+    height: 100vh;
+    background: url("./images/dog-paw-btn-nobg-light.png") no-repeat;
+    background-size: auto;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn {
+    margin-top: 600%;
+}
