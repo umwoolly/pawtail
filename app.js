@@ -15,7 +15,7 @@ app.get('/', (req, res)=>{
     res.sendFile(path.join(__dirname,'/client/index.html'));
 });
 
-app.get('/login', (req, res) => {
+app.get('/login.html', (req, res) => {
     console.log('accessing route /login, METHOD = GET');
     res.sendFile(path.join(__dirname, '/client/login.html'));
 })
