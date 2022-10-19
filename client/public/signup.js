@@ -29,9 +29,26 @@ emailInput.addEventListener('focusout', () => {
 })
 
 const signupBtn = document.getElementById('signup')
-signupBtn.addEventListener('click', (event) => {
+signupBtn.addEventListener('click', async (event) => {
     event.preventDefault();
     email = emailInput.value;
     password = pswdInput.value;
     console.log(`email = ${email}\npassword = ${password}`);
+    const userData = {
+        email: email,
+        password: password
+    }    
+    const response = await postData('/signup', userData)
 })
+
+async function postData(url = '', data = {}){
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)    
+    });
+    return response.json();    
+}

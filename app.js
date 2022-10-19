@@ -1,11 +1,17 @@
 // Add Express
+const { json } = require('express');
 const express = require('express');
-const { Module } = require('module');
+const bodyParser = require('body-parser')
 const path = require('path');
 
 // Initialize Express
 const app = express();
 const port = 3000;
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false}))
+
+const members = []
 
 // middleware is a function that gets executed on every request
 // and what are we doing? we are sending the content of the public folder
@@ -15,6 +21,7 @@ app.use(express.static(path.join(__dirname, './client/public/')));
 app.use((req, res, next) => {
     console.log('a request came in, we are in the middleware')
     console.log(req.path)
+    console.log(req.method)
     // you should never do this, don't ever send a response inside the middleware because once the response is executed, it will never go to the next()
     //res.send()
     next()
@@ -36,6 +43,24 @@ app.get('/signup', (req, res) => {
     res.sendFile(path.join(__dirname, '/client/signup.html'));
 })
 
+app.post('/signup', (req, res) => {
+    console.log('we got a new member')
+    console.log(req.body)
+    members.push(req.body)
+    res.json({
+        message: "Member created successfully"
+    })
+})
+
+app.post('*', (req, res) => {
+    res.json({
+        "error": "invalid route"
+    })
+})
+
+app.get('/members', (req, res) => {
+    res.json(members)
+})
 
 // Initialize server
 app.listen(port, ()=>{
