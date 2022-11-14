@@ -1,0 +1,25 @@
+body {
+    font-family: 'Righteous';
+    font-size: 30px;
+    color: chartreuse;
+    background-color: black;
+}
+
+.container-upper {
+    margin-top: 25%;
+    text-align: center;
+}
+
+.container-upper img{
+    width: 25%;
+}
+
+.container-lower {
+    margin-top: 10%;
+    text-align: center;
+}
+
+#search-bar {
+    margin-left: 25%;
+    margin-right: 25%    
+}

@@ -4,20 +4,32 @@
   "description": "The pioneer digital avenue for pet owners from all over the globe to convene together in honouring the loss of their beloved pet(s) by creating and sharing pet portal(s), through which the site's community can support each others' grievance journey and offer a loving and safe space to preserve and commemorate the memories of their deceased pets.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev_start": "nodemon app.js",
+    "dbg_start": "SET DEBUG=pawtail:* & npm run dev_start"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/umwoolly/pawtal.git"
+    "url": "git+https://github.com/umwoolly/pawtail.git"
   },
   "author": "Lily Woo",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/umwoolly/pawtal/issues"
+    "url": "https://github.com/umwoolly/pawtail/issues"
   },
-  "homepage": "https://github.com/umwoolly/pawtal#readme",
+  "homepage": "https://github.com/umwoolly/pawtail#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.1",
+    "cookie-parser": "^1.4.6",
+    "country-list": "^2.2.0",
+    "dog-breeds": "^1.0.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.6",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.7.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

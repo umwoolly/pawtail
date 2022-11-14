@@ -1,21 +1,37 @@
-// Add Express
 const { json } = require('express');
 const express = require('express');
-const bodyParser = require('body-parser')
 const path = require('path');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const { engine } = require('express-handlebars');
+const userRoutes = require('./user_module/route');
+const petRoutes = require('./pet_module/route');
+const tributeRoutes = require('./tribute_module/route');
+const { getConnection } = require('./db/db');
 
 // Initialize Express
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: false}))
+// View engine setup
+app.engine('.hbs', engine({extname: '.hbs'}));
+app.set('view engine', '.hbs');
+app.set('views', './views');
 
 const members = []
 
 // middleware is a function that gets executed on every request
 // and what are we doing? we are sending the content of the public folder
 app.use(express.static(path.join(__dirname, './client/public/')));
+// parse application/json
+app.use(bodyParser.json());
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(cookieParser());
+
+// userRoutes(app);
+// petRoutes(app);
+// tributeRoutes(app);
 
 // this is being called whenever a request comes in no matter what routes the request is for
 app.use((req, res, next) => {
@@ -29,18 +45,18 @@ app.use((req, res, next) => {
 
 // Create GET request
 app.get('/', (req, res)=>{
-    console.log('accessing route /, METHOD = GET');
-    res.sendFile(path.join(__dirname,'/client/index.html'));
+    console.log('accessing route /, METHOD = GET')
+    res.sendFile(path.join(__dirname,'/client/index.html'))
 });
 
 app.get('/login', (req, res) => {
-    console.log('accessing route /login, METHOD = GET');
-    res.sendFile(path.join(__dirname, '/client/login.html'));
+    console.log('accessing route /login, METHOD = GET')
+    res.sendFile(path.join(__dirname, '/client/login.html'))
 })
 
 app.get('/signup', (req, res) => {
-    console.log('accessing route /signup, METHOD = GET');
-    res.sendFile(path.join(__dirname, '/client/signup.html'));
+    console.log('accessing route /signup, METHOD = GET')
+    res.sendFile(path.join(__dirname, '/client/signup.html'))
 })
 
 app.post('/signup', (req, res) => {
@@ -52,20 +68,26 @@ app.post('/signup', (req, res) => {
     })
 })
 
+app.get('/members', (req, res) => {
+    res.json(members)
+})
+
+app.get('*', (req, res) => {
+    console.log('invalid route, METHOD = GET')
+    res.sendFile(path.join(__dirname, '/client/404.html'))
+})
+
 app.post('*', (req, res) => {
     res.json({
         "error": "invalid route"
     })
 })
 
-app.get('/members', (req, res) => {
-    res.json(members)
-})
+const startServer = async () => {
+    await getConnection()
+    app.listen(port, async() => {
+        console.log(`Server listening on port ${port}`);
+    })
+}
 
-// Initialize server
-app.listen(port, ()=>{
-    console.log('Listening on port: ' + port);
-});
-
-// Export app (Express API) so vercel can access it
-module.exports = app;
+startServer();
