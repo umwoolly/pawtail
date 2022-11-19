@@ -28,14 +28,18 @@ const PetSchema = new Schema({
         enum: breedArray,
         required: true
     },
-    bio: String,
+    bio: {
+        type: String,
+        trim: true,
+        required: true
+    },
     country: {
         type: String,
         enum: countryArray,
         required: true
     },
     candles_lit: Number,
-    date: {
+    created: {
         type: Date,
         default: Date.now
     }

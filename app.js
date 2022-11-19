@@ -7,7 +7,7 @@ const { engine } = require('express-handlebars');
 const userRoutes = require('./user_module/route');
 const petRoutes = require('./pet_module/route');
 const tributeRoutes = require('./tribute_module/route');
-const { getConnection } = require('./db/db');
+const { getConnection, mongoose } = require('./db/db');
 
 // Initialize Express
 const app = express();
@@ -85,6 +85,12 @@ app.post('*', (req, res) => {
 
 const startServer = async () => {
     await getConnection()
+
+    // Setup default mongoose connection
+    const db = mongoose.connection;
+    // Bind connection to error event (to get notification of connection error).
+    db.on("error", console.error.bind(console, "MongoDB connection error:"));
+
     app.listen(port, async() => {
         console.log(`Server listening on port ${port}`);
     })

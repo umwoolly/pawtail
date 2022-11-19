@@ -7,8 +7,10 @@ const UserSchema = new Schema({
     },
     email: {
         type: String,
-        required: true,
-        unique: true
+        trim: true,
+        lowercase: true,
+        unique: true,
+        required: [true, "Email required"]
     },
     gender: {
         type: String,
@@ -21,7 +23,10 @@ const UserSchema = new Schema({
     },
     avatar: String,
     admin: Boolean,
-    date: Date
+    joined: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 const UserModel = mongoose.model('User', UserSchema);

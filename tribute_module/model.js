@@ -5,12 +5,23 @@ const TributeSchema = new Schema({
         type: String,
         required: true
     },
-    content: String,
+    category: {
+        type: String,
+        enum: ["message", "poem", "quote"],
+        required: true
+    },
+    content: {
+        type: String,
+        required: true
+    },
     pet_id: {
         type: Schema.Types.ObjectId,
         ref: "Pet"
     },
-    date: Date
+    posted: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 const TributeModel = mongoose.model('Tribute', TributeSchema);

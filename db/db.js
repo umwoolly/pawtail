@@ -8,9 +8,9 @@ require('dotenv').config();
 
 const getConnection = async () => {
     if (connection) {
-        console.log('returning existing MongoDB connection');
+        console.log('Returning existing MongoDB connection');
     } else {
-        console.log('creating new connection to MongoDB');
+        console.log('Creating new connection to MongoDB');
         connection = await mongoose.connect(process.env.MONGODB_URI/* || localMongoDB*/, {useNewUrlParser: true, useUnifiedTopology: true});
     }
     return connection;
