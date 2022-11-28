@@ -1,9 +1,9 @@
-const { json } = require('express');
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { engine } = require('express-handlebars');
+const userService = require('./user_module/service');
 const userRoutes = require('./user_module/route');
 const petRoutes = require('./pet_module/route');
 const tributeRoutes = require('./tribute_module/route');
@@ -18,9 +18,7 @@ app.engine('.hbs', engine({extname: '.hbs'}));
 app.set('view engine', '.hbs');
 app.set('views', './views');
 
-const members = []
-
-// middleware is a function that gets executed on every request
+// middleware is a function that gets executed on every request that comes to express
 // and what are we doing? we are sending the content of the public folder
 app.use(express.static(path.join(__dirname, './client/public/')));
 // parse application/json
@@ -33,12 +31,15 @@ app.use(cookieParser());
 // petRoutes(app);
 // tributeRoutes(app);
 
+// we can build our own middleware, should always put in a call to next() at the end of it.
 // this is being called whenever a request comes in no matter what routes the request is for
+// Therefore, don't ever send a response inside the middleware.
 app.use((req, res, next) => {
     console.log('a request came in, we are in the middleware')
     console.log(req.path)
     console.log(req.method)
-    // you should never do this, don't ever send a response inside the middleware because once the response is executed, it will never go to the next()
+    // you should never do this, don't ever send a response inside the middleware because once the response
+    // is executed (once we sent a response, it's ending the connection), it will never go to the next()
     //res.send()
     next()
 })
@@ -59,18 +60,14 @@ app.get('/signup', (req, res) => {
     res.sendFile(path.join(__dirname, '/client/signup.html'))
 })
 
-app.post('/signup', (req, res) => {
-    console.log('we got a new member')
-    console.log(req.body)
-    members.push(req.body)
-    res.json({
+app.post('/signup', async (req, res) => {
+    console.log(req.body) // read the data
+    res.status(200).json({
         message: "Member created successfully"
     })
 })
-
-app.get('/members', (req, res) => {
-    res.json(members)
-})
+// "payload" is what browser sends to the server
+// "response" is what server sent back and what browser gets in return.
 
 app.get('*', (req, res) => {
     console.log('invalid route, METHOD = GET')

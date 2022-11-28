@@ -1,0 +1,89 @@
+body {
+    color: #fff;
+    background-color: #f89d25;
+    font-family: 'Handlee', sans-serif;
+}
+.toast {
+    position: fixed;
+    top: 17px;
+    right: 21px;
+}
+.form-control, .form-control:focus, .input-group-text {
+    border-color: #e1e1e1;
+}
+.form-control, .btn {        
+    border-radius: 5px;
+}
+.signup-form {
+    width: 390px;
+    margin: 0 auto;
+    padding: 30px 0;
+}
+.signup-form form {
+    color: #999;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    background: #fff;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+}
+.signup-form h2 {
+    color: #441803;
+    font-weight: 900;
+    font-size: xx-large;
+    margin-top: 0;
+}
+.signup-form hr {
+    margin: 0 -30px 20px;
+}
+.signup-form .form-group {
+    margin-bottom: 20px;
+}
+.signup-form label {
+    font-weight: 600;
+    font-size: 14px;
+}
+.signup-form .form-control {
+    min-height: 38px;
+}	
+.signup-form input[type="checkbox"] {
+    margin-top: 2px;
+}   
+.signup-form .btn{        
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #441803;
+    border: none;
+    min-width: 100px;
+}
+.signup-form .btn:hover, .signup-form .btn:focus {
+    background: #f89d25;
+    outline: none;
+}
+.signup-form a {
+    color: #fff;	
+    text-decoration: underline;
+}
+.signup-form a:hover {
+    text-decoration: none;
+}
+.signup-form form a {
+    color: #107964;
+    text-decoration: none;
+}	
+.signup-form form a:hover {
+    text-decoration: underline;
+}
+.signup-form .fa {
+    font-size: 21px;
+}
+.signup-form .fa-paper-plane {
+    font-size: 18px;
+}
+.signup-form .fa-check {
+    color: #fff;
+    left: 19px;
+    top: 20px;
+    font-size: 7px;
+    position: absolute;
+}

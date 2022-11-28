@@ -1,54 +1,87 @@
-console.log('inside signup.js');
-
-// what we need to do in this file are:
-// read email and read password
-const emailInput = document.getElementById('emailID')
-let email = emailInput.value;
-// emailInput.addEventListener('keyup', () => {
-//     email = emailInput.value;
-// })
-// Note to self: keyup is good for searches
-// Note to self: focusout is good for validation
-// Note to self: click is good for when you need to take an action
-
-const pswdInput = document.getElementById('pswdID')
-let password = pswdInput.value;
-// pswdInput.addEventListener('keyup', () => {
-//     password = pswdInput.value;
-// })
-
-emailInput.addEventListener('focusout', () => {
-    console.log('user is done typing');
-    email = emailInput.value;
-
-    if (email.includes('@')){
-        console.log('all\'s good');        
-    } else {
-        window.alert('please provide a valid email');
+const handleSignUp = async () => {
+    // read all form fields
+    const formValues = {
+        username: document.getElementById('usernameID').value,
+        email: document.getElementById('emailID').value,
+        password1: document.getElementById('password1ID').value,
+        password2: document.getElementById('password2ID').value,
+        terms: document.getElementById('termsID').checked
     }
-})
 
-const signupBtn = document.getElementById('signup')
-signupBtn.addEventListener('click', async (event) => {
-    event.preventDefault();
-    email = emailInput.value;
-    password = pswdInput.value;
-    console.log(`email = ${email}\npassword = ${password}`);
-    const userData = {
-        email: email,
-        password: password
-    }    
-    const response = await postData('/signup', userData)
-})
+    // validate form values
+    const formValuesValidated = validateSignUp(formValues)
 
-async function postData(url = '', data = {}){
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify(data)    
-    });
-    return response.json();    
+    if (formValuesValidated){
+        const response = await fetch('/signup', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: formValues.username,
+                email: formValues.email,
+                password: formValues.password1,
+                terms: formValues.terms
+            }) // body data type must match "Content-Type" header
+        });
+        console.log(response)
+        if (response.status !== 200) {
+            const responseBody = await response.json()
+            console.log(responseBody)
+            showError(responseBody.error)
+        }
+    }
 }
+
+const validateSignUp = (formValues) => {
+    // validate each form field to ensure it is valid
+    if ((!formValues.username) || (formValues.username === '')){
+        showError('Username is required. Please enter your username');
+        return false;
+    }
+    if ((!formValues.email) || (formValues.email === '')){
+        showError('Email is required. Please enter your email.');
+        return false;
+    }
+    if (!(formValues.email.includes('@'))){
+        showError('Email domain is required. Please re-enter your email.');
+        return false;
+    }
+    if ((!formValues.password1) || (formValues.password1 === '')){
+        showError('Password is required. Please enter your password.');
+        return false;
+    }
+    if ((!formValues.password2) || (formValues.password2 === '')){
+        showError('Password confirmation is required. Please re-enter your password.');
+        return false;
+    }
+    if (formValues.password1 !== formValues.password2){
+        showError('Passwords do not match. Please try again.');
+        return false;
+    }
+    if (!(formValues.terms)){
+        showError('Terms are required.');
+        return false;
+    }
+    return true;
+}
+
+const showError = (errorMsg) => {
+    const toast = document.getElementsByTagName('body')[0];
+    toast.insertAdjacentHTML('beforeend', `
+    <div id="toast" class="toast show align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            <p>${errorMsg}</p>
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close" onClick="closeError('toast')"></button>
+        </div>
+    </div>`);
+}
+
+const closeError = (id) => {
+    const toast = document.getElementById(id);
+    toast.remove();
+}
+const signupBtn = document.getElementById('signupBtnID')
+signupBtn.addEventListener('click', handleSignUp)
