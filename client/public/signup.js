@@ -11,6 +11,8 @@ const handleSignUp = async () => {
     // validate form values
     const formValuesValidated = validateSignUp(formValues)
 
+    // front end validation in signup.js -- do the same validation in the back end in service.js
+    // to ensure should someone disable javascript and make calls directly to the server, your backend would be catching it
     if (formValuesValidated){
         const response = await fetch('/signup', {
             method: 'POST',
